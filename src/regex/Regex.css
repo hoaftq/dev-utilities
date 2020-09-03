@@ -66,3 +66,13 @@ label {
 .matched-content span:nth-child(even) {
     background-color: yellowgreen;
 }
+
+.matched-content span:hover {
+    cursor: pointer;
+    outline: 2px solid blue;
+}
+
+.group-info {
+    font-weight: bold;
+    color: blueviolet;
+}

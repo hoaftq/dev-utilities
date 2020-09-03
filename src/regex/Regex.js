@@ -8,11 +8,13 @@ export class Regex extends React.Component {
 
         this.state = {
             inputString: "",
-            regex: null
+            regex: null,
+            replacedString: ""
         }
 
         this.handlePatternChange = this.handlePatternChange.bind(this);
         this.handleInputStringChange = this.handleInputStringChange.bind(this);
+        this.handleReplacementChange = this.handleReplacementChange.bind(this);
     }
 
     handlePatternChange(reg) {
@@ -23,12 +25,22 @@ export class Regex extends React.Component {
         this.setState({ inputString: e.target.value });
     }
 
+    handleReplacementChange(replacement) {
+        const { regex, inputString } = this.state;
+        if (regex && inputString) {
+            const replacedString = inputString.replace(regex, replacement);
+            this.setState({
+                replacedString
+            });
+        }
+    }
+
     render() {
         return (
             <div className="regex">
                 <div>
                     <RegexPattern onChange={this.handlePatternChange} />
-                    <Replacement />
+                    <Replacement onChange={this.handleReplacementChange} />
                 </div>
                 <div>
                     <label className="title">Input string</label>
@@ -41,7 +53,7 @@ export class Regex extends React.Component {
                         <MatchedContent inputString={this.state.inputString} regex={this.state.regex} />
                     </div>
                     <label className="title">Replaced string</label>
-                    <textarea type="text" className="content" readOnly={true}></textarea>
+                    <textarea type="text" className="content" readOnly={true} value={this.state.replacedString}></textarea>
                 </div>
             </div>
         );
@@ -145,11 +157,21 @@ class RegexPattern extends React.Component {
 }
 
 class Replacement extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(e) {
+        this.props.onChange(e.target.value);
+    }
+
     render() {
         return (
             <div>
                 <label className="title">Replacement</label>
-                <input type="text" name="replacement"></input>
+                <input type="text" name="replacement" onChange={this.handleChange}></input>
             </div>
         );
     }
@@ -159,14 +181,13 @@ class MatchedContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groups: []
+            match: null
         };
     }
 
-    handleMatchClick(groups) {
-        // alert(groups);
+    handleMatchClick(match) {
         this.setState({
-            groups
+            match
         });
     }
 
@@ -181,9 +202,8 @@ class MatchedContent extends React.Component {
                     contents.push(inputString.substring(i, m.index));
                 }
 
-                const [_, ...groups] = m;
                 contents.push(
-                    <span key={m.index} onClick={this.handleMatchClick.bind(this, groups)}>
+                    <span key={m.index} onClick={this.handleMatchClick.bind(this, m)}>
                         {inputString.substr(m.index, m[0].length)}
                     </span>);
                 i = m.index + m[0].length;
@@ -196,16 +216,36 @@ class MatchedContent extends React.Component {
             contents.push(inputString);
         }
 
+
+        let groupContent;
+        if (this.state.match) {
+            const [match, ...groups] = this.state.match;
+            const index = this.state.match.index;
+            groupContent = (
+                <div>
+                    <div style={{ marginBottom: 5 }}>
+                        Match: <span className="group-info">{match}</span>
+                    </div>
+                    <div style={{ marginBottom: 5 }}>
+                        Range: <span className="group-info">{index}</span> - <span className="group-info">{index + match?.length}</span>
+                    </div>
+                    <div style={{ marginBottom: 5 }}>
+                        Groups:
+                        <ul style={{ display: 'inline-block' }}>
+                            {groups.map(g => <li className="group-info" style={{ display: "inline-block", marginRight: 10 }}>{g}</li>)}
+                        </ul>
+                    </div>
+                </div>)
+        };
+
         return (
-            <div className="matched-content" style={{ width: '100%', height: '100%' }}>
-                <div style={{ width: '100%', height: '50%' }}>
+            <div style={{ width: '100%', height: '100%' }}>
+                <div className="matched-content" style={{ height: '50%' }}>
                     {contents}
                 </div>
 
-                <div style={{ width: '100%', height: '50%', borderTop: '1px solid lightblue' }}>
-                    <ol>
-                        {this.state.groups.map(g => <li style={{display: "inline-block"}}>{g}</li>)}
-                    </ol>
+                <div style={{ height: '50%', borderTop: '1px solid lightblue' }}>
+                    {groupContent}
                 </div>
             </div>
         );
