@@ -53,6 +53,12 @@ label {
     color: gray;
 }
 
+.regex-error-message {
+    font-size: small;
+    color: red;
+    margin-left: 5px;
+}
+
 .matched-content span:nth-child(odd) {
     background-color: yellow;
 }

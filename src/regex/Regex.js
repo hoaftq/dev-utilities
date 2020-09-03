@@ -36,12 +36,12 @@ export class Regex extends React.Component {
                         className="content"
                         name="inputString"
                         onChange={this.handleInputStringChange}></textarea>
-                    <label className="title">Matching</label>
-                    <div className="content" style={{ border: '1px solid lightblue', padding: 5 }}>
+                    <label className="title">Matches</label>
+                    <div className="content" style={{ border: '1px solid lightblue', padding: 5, height: 320 }}>
                         <MatchedContent inputString={this.state.inputString} regex={this.state.regex} />
                     </div>
                     <label className="title">Replaced string</label>
-                    <textarea type="text" className="content" readOnly="true"></textarea>
+                    <textarea type="text" className="content" readOnly={true}></textarea>
                 </div>
             </div>
         );
@@ -69,7 +69,8 @@ class RegexPattern extends React.Component {
 
         this.state = {
             pattern: "",
-            flags: flags
+            flags: flags,
+            errorMessage: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -94,7 +95,12 @@ class RegexPattern extends React.Component {
     }
 
     createNewRegex() {
+        this.setState({
+            errorMessage: ""
+        });
+
         if (!this.state.pattern) {
+            this.props.onChange(null);
             return;
         }
 
@@ -103,13 +109,20 @@ class RegexPattern extends React.Component {
         );
         console.log(flags);
 
-        const reg = new RegExp(this.state.pattern, flags);
+        let reg = null;
+        try {
+            reg = new RegExp(this.state.pattern, flags);
+        } catch (e) {
+            this.setState({
+                errorMessage: e.message
+            });
+        }
         this.props.onChange(reg);
     }
 
     render() {
         const flagElements = Object.keys(this.flagDescriptions).map(f => (
-            <label>
+            <label key={f}>
                 <input type="checkbox"
                     name={f}
                     checked={this.state.flags[f]}
@@ -122,6 +135,7 @@ class RegexPattern extends React.Component {
             <div>
                 <label className="title">Regex partern</label>
                 <input type="text" value={this.state.pattern} onChange={this.handleChange}></input>
+                <div class="regex-error-message">{this.state.errorMessage}</div>
                 <div className="options">
                     {flagElements}
                 </div>
@@ -144,6 +158,16 @@ class Replacement extends React.Component {
 class MatchedContent extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            groups: []
+        };
+    }
+
+    handleMatchClick(groups) {
+        // alert(groups);
+        this.setState({
+            groups
+        });
     }
 
     render() {
@@ -156,7 +180,12 @@ class MatchedContent extends React.Component {
                 if (m.index > i) {
                     contents.push(inputString.substring(i, m.index));
                 }
-                contents.push(<span>{inputString.substr(m.index, m[0].length)}</span>);
+
+                const [_, ...groups] = m;
+                contents.push(
+                    <span key={m.index} onClick={this.handleMatchClick.bind(this, groups)}>
+                        {inputString.substr(m.index, m[0].length)}
+                    </span>);
                 i = m.index + m[0].length;
             }
 
@@ -169,7 +198,15 @@ class MatchedContent extends React.Component {
 
         return (
             <div className="matched-content" style={{ width: '100%', height: '100%' }}>
-                {contents}
+                <div style={{ width: '100%', height: '50%' }}>
+                    {contents}
+                </div>
+
+                <div style={{ width: '100%', height: '50%', borderTop: '1px solid lightblue' }}>
+                    <ol>
+                        {this.state.groups.map(g => <li style={{display: "inline-block"}}>{g}</li>)}
+                    </ol>
+                </div>
             </div>
         );
     }
