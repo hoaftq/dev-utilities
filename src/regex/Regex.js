@@ -7,53 +7,46 @@ export class Regex extends React.Component {
         super();
 
         this.state = {
-            inputString: "",
             regex: null,
-            replacedString: ""
+            inputString: "",
+            replacement: ""
         }
 
-        this.handlePatternChange = this.handlePatternChange.bind(this);
+        this.handleRegexChange = this.handleRegexChange.bind(this);
         this.handleInputStringChange = this.handleInputStringChange.bind(this);
         this.handleReplacementChange = this.handleReplacementChange.bind(this);
     }
 
-    handlePatternChange(reg) {
-        this.setState({ regex: reg });
+    handleRegexChange(regex) {
+        this.setState({ regex });
     }
 
-    handleInputStringChange(e) {
-        this.setState({ inputString: e.target.value });
+    handleInputStringChange(inputString) {
+        this.setState({ inputString });
     }
 
     handleReplacementChange(replacement) {
-        const { regex, inputString } = this.state;
-        if (regex && inputString) {
-            const replacedString = inputString.replace(regex, replacement);
-            this.setState({
-                replacedString
-            });
-        }
+        this.setState({ replacement });
     }
 
     render() {
+        const { regex, inputString, replacement } = this.state;
         return (
             <div className="regex">
                 <div>
-                    <RegexPattern onChange={this.handlePatternChange} />
+                    <RegexPattern onChange={this.handleRegexChange} />
                     <Replacement onChange={this.handleReplacementChange} />
                 </div>
                 <div>
-                    <label className="title">Input string</label>
-                    <textarea type="text"
-                        className="content"
-                        name="inputString"
-                        onChange={this.handleInputStringChange}></textarea>
-                    <label className="title">Matches</label>
-                    <div className="content" style={{ border: '1px solid lightblue', padding: 5, height: 320 }}>
-                        <MatchedContent inputString={this.state.inputString} regex={this.state.regex} />
+                    <div className="input-string">
+                        <InputString onChange={this.handleInputStringChange} />
                     </div>
-                    <label className="title">Replaced string</label>
-                    <textarea type="text" className="content" readOnly={true} value={this.state.replacedString}></textarea>
+                    <div className="matched-content-1">
+                        <MatchedContent regex={regex} inputString={inputString} />
+                    </div>
+                    <div className="replaced-string">
+                        <ReplacedContent regex={regex} inputString={inputString} replacement={replacement} />
+                    </div>
                 </div>
             </div>
         );
@@ -177,6 +170,19 @@ class Replacement extends React.Component {
     }
 }
 
+function InputString(props) {
+    return (
+        <div style={{ height: '100%' }}>
+            <label className="title" style={{ height: '2em', lineHeight: '2em' }}>Input string</label>
+            <textarea type="text"
+                className="content"
+                name="inputString"
+                style={{ height: 'calc(100% - 2em)' }}
+                onChange={(e) => props.onChange(e.target.value)}></textarea>
+        </div>
+    );
+}
+
 class MatchedContent extends React.Component {
     constructor(props) {
         super(props);
@@ -224,13 +230,15 @@ class MatchedContent extends React.Component {
             groupContent = (
                 <div>
                     <div style={{ marginBottom: 5 }}>
-                        Match: <span className="group-info">{match}</span>
+                        <span className="group-title">Match:</span>
+                        <span className="group-info">{match}</span>
                     </div>
                     <div style={{ marginBottom: 5 }}>
-                        Range: <span className="group-info">{index}</span> - <span className="group-info">{index + match?.length}</span>
+                        <span className="group-title">Range:</span>
+                        <span className="group-info">{index}</span> - <span className="group-info">{index + match?.length}</span>
                     </div>
                     <div style={{ marginBottom: 5 }}>
-                        Groups:
+                        <span className="group-title">Groups:</span>
                         <ul style={{ display: 'inline-block' }}>
                             {groups.map(g => <li className="group-info" style={{ display: "inline-block", marginRight: 10 }}>{g}</li>)}
                         </ul>
@@ -239,16 +247,38 @@ class MatchedContent extends React.Component {
         };
 
         return (
-            <div style={{ width: '100%', height: '100%' }}>
-                <div className="matched-content" style={{ height: '50%' }}>
-                    {contents}
-                </div>
-
-                <div style={{ height: '50%', borderTop: '1px solid lightblue' }}>
-                    {groupContent}
+            <div style={{ height: '100%' }}>
+                <div className="title" style={{ height: '2em', lineHeight: '2em' }}>Matches</div>
+                <div className="content" style={{ height: 'calc(100% - 2em)' }}>
+                    <div className="matched-content" style={{ height: '50%' }}>
+                        {contents}
+                    </div>
+                    <div style={{ height: '50%', borderTop: '1px solid lightblue' }}>
+                        {groupContent}
+                    </div>
                 </div>
             </div>
         );
     }
+}
 
+class ReplacedContent extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { regex, inputString, replacement } = this.props;
+        let replacedString = "";
+        if (regex && inputString) {
+            replacedString = inputString.replace(regex, replacement);
+        }
+
+        return (
+            <div style={{ height: '100%' }}>
+                <div className="title" style={{ height: '2em', lineHeight: '2em' }}>Replaced string</div>
+                <div className="content" style={{ height: 'calc(100% - 2em)', overflowY: 'auto' }}>{replacedString}</div>
+            </div>
+        );
+    }
 }

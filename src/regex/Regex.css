@@ -6,12 +6,27 @@
     margin: 1em;
 }
 
+.input-string {
+    height: 160px;
+    margin-bottom: 10px;
+}
+
+.matched-content-1 {
+    min-height: 320px;
+    margin-bottom: 10px;
+}
+
+.replaced-string {
+    height: 160px;
+}
+
 .content {
     width: 100%;
-    height: 160px;
     border: 1px solid lightblue;
     border-radius: 5px;
-    margin-bottom: 10px;
+    padding: 5px;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .content:focus {
@@ -36,6 +51,7 @@ label {
 
 .title {
     font-weight: bold;
+    /* line-height: 2em; */
 }
 
 .options {
@@ -72,7 +88,11 @@ label {
     outline: 2px solid blue;
 }
 
+.group-title {
+    font-size: small;
+    margin-right: 1em;
+}
+
 .group-info {
-    font-weight: bold;
     color: blueviolet;
 }
