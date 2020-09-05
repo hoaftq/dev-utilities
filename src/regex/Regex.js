@@ -187,37 +187,46 @@ class MatchedContent extends React.Component {
         };
     }
 
-    handleMatchClick(match) {
+    handleMatchClick(match, e) {
         this.setState({
             match
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.regex !== nextProps.regex || this.props.inputString !== nextProps.inputString) {
+            this.setState({
+                match: null
+            });
+        }
+    }
+
     render() {
         const { inputString, regex } = this.props;
 
-        const contents = [];
-        if (regex && regex.global) {
+        const matchedContents = [];
+        if (regex) {
             let i = 0, m;
             while ((m = regex.exec(inputString)) !== null) {
                 if (m.index > i) {
-                    contents.push(inputString.substring(i, m.index));
+                    matchedContents.push(inputString.substring(i, m.index));
                 }
 
-                contents.push(
+                matchedContents.push(
                     <span key={m.index} onClick={this.handleMatchClick.bind(this, m)}>
                         {inputString.substr(m.index, m[0].length)}
                     </span>);
                 i = m.index + m[0].length;
+
+                if (!regex.global) {
+                    break;
+                }
             }
 
             if (i < inputString.length) {
-                contents.push(inputString.substring(i));
+                matchedContents.push(inputString.substring(i));
             }
-        } else {
-            contents.push(inputString);
         }
-
 
         let groupContent;
         if (this.state.match) {
@@ -247,7 +256,7 @@ class MatchedContent extends React.Component {
                 <div className="title">Matches</div>
                 <div className="content">
                     <div className="matched-content">
-                        {contents}
+                        {matchedContents}
                     </div>
                     <div className="groups">
                         {groupContent}
