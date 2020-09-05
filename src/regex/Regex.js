@@ -41,11 +41,11 @@ export class Regex extends React.Component {
                     <div className="input-string">
                         <InputString onChange={this.handleInputStringChange} />
                     </div>
-                    <div className="matched-content-1">
+                    <div className="maches">
                         <MatchedContent regex={regex} inputString={inputString} />
                     </div>
                     <div className="replaced-string">
-                        <ReplacedContent regex={regex} inputString={inputString} replacement={replacement} />
+                        <ReplacedString regex={regex} inputString={inputString} replacement={replacement} />
                     </div>
                 </div>
             </div>
@@ -128,10 +128,7 @@ class RegexPattern extends React.Component {
     render() {
         const flagElements = Object.keys(this.flagDescriptions).map(f => (
             <label key={f}>
-                <input type="checkbox"
-                    name={f}
-                    checked={this.state.flags[f]}
-                    onChange={this.handleChange}></input>
+                <input type="checkbox" name={f} checked={this.state.flags[f]} onChange={this.handleChange}></input>
                 <span className="flag">{f}</span>
                 <span className="description">{this.flagDescriptions[f]}</span>
             </label>
@@ -139,9 +136,9 @@ class RegexPattern extends React.Component {
         return (
             <div>
                 <label className="title">Regex partern</label>
-                <input type="text" value={this.state.pattern} onChange={this.handleChange}></input>
+                <input type="text" name="pattern" value={this.state.pattern} onChange={this.handleChange}></input>
                 <div class="regex-error-message">{this.state.errorMessage}</div>
-                <div className="options">
+                <div className="flags">
                     {flagElements}
                 </div>
             </div>
@@ -172,12 +169,11 @@ class Replacement extends React.Component {
 
 function InputString(props) {
     return (
-        <div style={{ height: '100%' }}>
-            <label className="title" style={{ height: '2em', lineHeight: '2em' }}>Input string</label>
+        <div className="block">
+            <label className="title">Input string</label>
             <textarea type="text"
                 className="content"
                 name="inputString"
-                style={{ height: 'calc(100% - 2em)' }}
                 onChange={(e) => props.onChange(e.target.value)}></textarea>
         </div>
     );
@@ -229,31 +225,31 @@ class MatchedContent extends React.Component {
             const index = this.state.match.index;
             groupContent = (
                 <div>
-                    <div style={{ marginBottom: 5 }}>
+                    <div className="group">
                         <span className="group-title">Match:</span>
                         <span className="group-info">{match}</span>
                     </div>
-                    <div style={{ marginBottom: 5 }}>
+                    <div className="group">
                         <span className="group-title">Range:</span>
                         <span className="group-info">{index}</span> - <span className="group-info">{index + match?.length}</span>
                     </div>
-                    <div style={{ marginBottom: 5 }}>
+                    <div className="group">
                         <span className="group-title">Groups:</span>
-                        <ul style={{ display: 'inline-block' }}>
-                            {groups.map(g => <li className="group-info" style={{ display: "inline-block", marginRight: 10 }}>{g}</li>)}
+                        <ul>
+                            {groups.map(g => <li className="group-info">{g}</li>)}
                         </ul>
                     </div>
                 </div>)
         };
 
         return (
-            <div style={{ height: '100%' }}>
-                <div className="title" style={{ height: '2em', lineHeight: '2em' }}>Matches</div>
-                <div className="content" style={{ height: 'calc(100% - 2em)' }}>
-                    <div className="matched-content" style={{ height: '50%' }}>
+            <div className="block">
+                <div className="title">Matches</div>
+                <div className="content">
+                    <div className="matched-content">
                         {contents}
                     </div>
-                    <div style={{ height: '50%', borderTop: '1px solid lightblue' }}>
+                    <div className="groups">
                         {groupContent}
                     </div>
                 </div>
@@ -262,7 +258,7 @@ class MatchedContent extends React.Component {
     }
 }
 
-class ReplacedContent extends React.Component {
+class ReplacedString extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -275,9 +271,9 @@ class ReplacedContent extends React.Component {
         }
 
         return (
-            <div style={{ height: '100%' }}>
-                <div className="title" style={{ height: '2em', lineHeight: '2em' }}>Replaced string</div>
-                <div className="content" style={{ height: 'calc(100% - 2em)', overflowY: 'auto' }}>{replacedString}</div>
+            <div class="block">
+                <div className="title">Replaced string</div>
+                <div className="content" style={{ overflowY: 'auto' }}>{replacedString}</div>
             </div>
         );
     }
