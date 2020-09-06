@@ -121,12 +121,12 @@ li.group-info {
     margin-right: 10px;
 }
 
+.group-info {
+    color: #0075ff;
+}
+
 .group-title {
     font-size: small;
     font-weight: bold;
     margin-right: 1em;
-}
-
-.group-info {
-    color: #0075ff;
 }

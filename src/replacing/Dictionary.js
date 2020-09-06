@@ -10,7 +10,11 @@ class DictionaryList extends React.Component {
     }
 
     render() {
-        return null;
+        return (
+            <div>
+                
+            </div>
+        );
     }
 }
 

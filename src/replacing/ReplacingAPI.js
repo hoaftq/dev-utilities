@@ -1,20 +1,33 @@
-export default dictionaryService = {
-    data: [
-        { id: 1, name: 'Project 1' },
-        { id: 2, name: 'Project 2' },
-        { id: 3, name: 'Project 3' }
-    ],
+import indexedDBPromise from '../indexedDBPromise';
 
-    list() {
-        return this.data;
+const dbName = "DictionaryReplace";
+const dbVersion = 1;
+const dictionaryObjectSoreName = "dictionary";
+const itemObjectStoreName = "item";
+
+export default {
+
+    openDB() {
+        return indexedDBPromise.openDB(dbName, dbVersion, (db) => {
+            const dictObjectStore = db.createObjectStore(dictionaryObjectSoreName, { autoIncrement: true });
+            dictObjectStore.createIndex("name", "name", { unique: true });
+
+            const itemObjectStore = db.createObjectStore(itemObjectStoreName, { autoIncrement: true });
+            itemObjectStore.createIndex("from", "from", { unique: true });
+            itemObjectStore.createIndex("to", "to", { unique: false });
+        });
     },
 
-    save(dict) {
-        this.data.push(dict);
+    listDictionary() {
+        this.openDB().then(db => indexedDBPromise.getAll(db, dictionaryObjectSoreName));
+    },
+
+    addDictionary(name) {
+        return this.openDB().then(db => indexedDBPromise.add(db, dictionaryObjectSoreName, { name }));
     },
 
     update(dict) {
-        
+
     },
 
     delete(id) {

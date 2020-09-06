@@ -1,4 +1,5 @@
 import React from 'react';
+import ReplacingAPI from './ReplacingAPI';
 
 export class SearchItems extends React.Component {
 
@@ -24,6 +25,10 @@ export class SearchItems extends React.Component {
                 { from: 'From 2', to: 'To 2' },
             ]
         });
+
+        ReplacingAPI.addDictionary("Dictionary 1");
+        ReplacingAPI.addDictionary("Dictionary 2");
+
     }
 
     render() {
