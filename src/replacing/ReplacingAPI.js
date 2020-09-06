@@ -19,11 +19,13 @@ export default {
     },
 
     listDictionary() {
-        this.openDB().then(db => indexedDBPromise.getAll(db, dictionaryObjectSoreName));
+        return this.openDB().then(
+            db => indexedDBPromise.getAll(db, dictionaryObjectSoreName));
     },
 
     addDictionary(name) {
-        return this.openDB().then(db => indexedDBPromise.add(db, dictionaryObjectSoreName, { name }));
+        return this.openDB().then(
+            db => indexedDBPromise.add(db, dictionaryObjectSoreName, { name }));
     },
 
     update(dict) {

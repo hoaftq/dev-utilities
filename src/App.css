@@ -33,6 +33,7 @@ footer {
 footer .about {
   font-size: small;
   line-height: 40px;
+  margin-right: 0.5em;
 }
 
 footer .about a {

@@ -4,6 +4,7 @@ import './App.css';
 import { NewItem, SearchItems } from './replacing/Item';
 import { Regex } from './regex/Regex';
 import { BrowserRouter, Switch, Link, Route, NavLink } from 'react-router-dom';
+import { Dictionary } from './replacing/Dictionary';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       </nav>
       <Switch>
         <Route path="/dictionary-replace">
-          <SearchItems />
+          <Dictionary />
         </Route>
         <Route path="/regex">
           <Regex />
