@@ -8,11 +8,6 @@ import { Dictionary } from './replacing/Dictionary';
 
 function App() {
   return (
-    // <div>
-    //   {/* <SearchItems />
-    //   <NewItem /> */}
-    //   <Regex />
-    // </div>
     <BrowserRouter>
       <nav className="menu">
         <NavLink to="/dictionary-replace" activeClassName="selected-menu-item">Dictionary Replace</NavLink>
@@ -32,7 +27,6 @@ function App() {
         </span>
       </footer>
     </BrowserRouter>
-
   );
 }
 

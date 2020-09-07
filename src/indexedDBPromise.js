@@ -56,7 +56,7 @@ export default {
         return new Promise((resolve, reject) => {
             let addedKey;
             const trans = db.transaction(objectStoreName, "readwrite");
-            trans.onsuccess = (event) => {
+            trans.oncomplete = (event) => {
                 resolve(addedKey);
             }
             trans.onerror = (event) => {

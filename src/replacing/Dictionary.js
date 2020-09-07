@@ -13,11 +13,21 @@ export class Dictionary extends React.Component {
 
     componentDidMount() {
         replacingAPI.listDictionary().then(
-            (dictionaries) => { this.setState({ dictionaries }); }
+            (dictionaries) => {
+                console.log(JSON.stringify(this.state));
+                this.setState({ dictionaries });
+            }
         )
     }
 
     handleAdded() {
+        replacingAPI.listDictionary().then(
+            (dictionaries) => {
+                console.log(JSON.stringify(this.state));
+
+                this.setState({ dictionaries });
+            }
+        )
     }
 
     render() {
