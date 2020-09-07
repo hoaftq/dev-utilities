@@ -54,27 +54,27 @@ export default {
 
     add(db, objectStoreName, data) {
         return new Promise((resolve, reject) => {
-            let added;
+            let addedKey;
             const trans = db.transaction(objectStoreName, "readwrite");
             trans.onsuccess = (event) => {
-                resolve(added);
+                resolve(addedKey);
             }
             trans.onerror = (event) => {
                 reject(event.target); // TODO
             }
             const objectStore = trans.objectStore(objectStoreName);
             if (Array.isArray(data)) {
-                added = [];
+                addedKey = [];
                 data.forEach(d => {
                     const req = objectStore.add(d);
                     req.onsuccess = (event) => {
-                        added.push(event.target.result);
+                        addedKey.push(event.target.result);
                     }
                 });
             } else {
                 const req = objectStore.add(data);
                 req.onsuccess = (event) => {
-                    added = event.target.result;
+                    addedKey = event.target.result;
                 }
             }
         });

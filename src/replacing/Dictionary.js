@@ -5,24 +5,26 @@ export class Dictionary extends React.Component {
 
     constructor() {
         super();
-        this.addDictionary = this.addDictionary.bind(this);
-        this.i = 1;
+
+        this.state = { dictionaries: [] };
+
+        this.handleAdded = this.handleAdded.bind(this);
     }
 
-    addDictionary() {
-        replacingAPI.addDictionary("Dictonary " + this.i++).then(
-            v => {
-                alert(JSON.stringify(v));
-            }
-        );
+    componentDidMount() {
+        replacingAPI.listDictionary().then(
+            (dictionaries) => { this.setState({ dictionaries }); }
+        )
+    }
+
+    handleAdded() {
     }
 
     render() {
         return (
             <div>
-                <DictionaryList />
-                <AddDictionary />
-                <button type="button" onClick={this.addDictionary}>Add dictionary</button>
+                <DictionaryList dictionaries={this.state.dictionaries} />
+                <AddDictionary onAdded={this.handleAdded} />
             </div>
         );
     }
@@ -33,22 +35,13 @@ class DictionaryList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            dictionaries: []
-        };
-    }
-
-    componentDidMount() {
-        replacingAPI.listDictionary().then(
-            (dictionaries) => { this.setState({ dictionaries }); }
-        )
     }
 
     render() {
         return (
             <div>
                 <ul>
-                    {this.state.dictionaries.map(d => <li>{d.name}</li>)}
+                    {this.props.dictionaries.map(d => <li>{d.name}</li>)}
                 </ul>
             </div>
         );
@@ -56,14 +49,47 @@ class DictionaryList extends React.Component {
 }
 
 class AddDictionary extends React.Component {
-    // constructor() {
-    // }
+    constructor(props) {
+        super(props);
+        this.state = { dictionaryName: "", errorMessage: "" };
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleDictionaryNameChange = this.handleDictionaryNameChange.bind(this);
+    }
+
+    validate() {
+        this.setState({ errorMessage: "" });
+
+        if (!this.state.dictionaryName) {
+            this.setState({ errorMessage: "Dictionary is required" });
+            return false;
+        }
+
+        return true;
+    }
+
+    handleDictionaryNameChange(e) {
+        const target = e.target;
+        this.setState({
+            dictionaryName: target.value
+        }, () => {
+            this.validate(target.value);
+        });
+    }
+
+    handleAdd() {
+        if (this.validate()) {
+            replacingAPI.addDictionary(this.state.dictionaryName).then(key => {
+                this.props.onAdded(key, this.state.dictionaryName);
+            });
+        }
+    }
 
     render() {
         return (
             <div>
-                <input type="text" name="dictionaryName"></input>
-                <input type="button" value="Add"></input>
+                <div style={{ color: 'red' }}>{this.state.errorMessage}</div>
+                <input type="text" name="dictionaryName" value={this.state.dictionaryName} onChange={this.handleDictionaryNameChange}></input>
+                <input type="button" value="Add" onClick={this.handleAdd}></input>
             </div>
         );
     }

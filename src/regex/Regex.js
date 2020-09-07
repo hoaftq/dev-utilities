@@ -87,7 +87,6 @@ class RegexPattern extends React.Component {
             this.setState((state) => ({
                 flags: { ...state.flags, [target.name]: target.checked }
             }), () => {
-                console.log(JSON.stringify(this.state));
                 this.createNewRegex();
             });
         } else {
@@ -112,7 +111,6 @@ class RegexPattern extends React.Component {
         const flags = Object.keys(this.state.flags).reduce(
             (acc, currentValue) => acc + (this.state.flags[currentValue] ? currentValue : ""), ""
         );
-        console.log(flags);
 
         let reg = null;
         try {
