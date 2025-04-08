@@ -1,0 +1,121 @@
+.regex {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 10px;
+  gap: 10px;
+  margin: 1em;
+}
+
+.input-string {
+  height: 160px;
+  margin-bottom: 10px;
+}
+
+.maches {
+  margin-bottom: 10px;
+}
+
+.replaced-string {
+  height: 160px;
+}
+
+.block {
+  height: 100%;
+}
+
+.title {
+  font-weight: bold;
+  line-height: 2em;
+}
+
+.content {
+  width: 100%;
+  height: calc(100% - 2em);
+  border: 2px solid darkgray;
+  border-radius: 5px;
+  padding: 5px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.content:focus {
+  outline-color: #0075ff;
+}
+
+.pattern,
+.replacement {
+  width: 100%;
+}
+
+.flags {
+  font-size: small;
+}
+
+.flag {
+  font-weight: bold;
+  color: darkblue;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.description {
+  color: gray;
+}
+
+.regex-error-message {
+  font-size: small;
+  color: red;
+  margin-left: 5px;
+}
+
+.matched-content {
+  height: 50%;
+  min-height: 160px;
+  line-height: 1.5em;
+  padding-bottom: 5px;
+}
+
+.matched-content span:nth-child(odd) {
+  background-color: lightpink;
+}
+
+.matched-content span:nth-child(even) {
+  background-color: lightblue;
+}
+
+.matched-content span:hover {
+  cursor: pointer;
+  outline: 2px solid #0075ff;
+}
+
+.groups {
+  height: 50%;
+  min-height: 85px;
+  border-top: 1px solid darkgray;
+  padding-top: 5px;
+}
+
+.group {
+  margin-bottom: 5px;
+}
+
+.group ul {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+li.group-info {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.group-info {
+  color: #0075ff;
+}
+
+.group-title {
+  font-size: small;
+  font-weight: bold;
+  margin-right: 1em;
+}
