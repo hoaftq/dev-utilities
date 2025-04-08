@@ -1,0 +1,11 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.dictionary {
+    width: 30%;
+    margin-right: 2rem;
+}

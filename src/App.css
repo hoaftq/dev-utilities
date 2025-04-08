@@ -5,6 +5,7 @@
 .menu {
   padding: 0.5em;
   background-color: black;
+  margin-bottom: 2rem;
 }
 
 .menu a {
@@ -28,6 +29,7 @@ footer {
   text-align: right;
   height: 40px;
   border-top: 1px solid lightgray;
+  margin-top: 1rem;
 }
 
 footer .about {

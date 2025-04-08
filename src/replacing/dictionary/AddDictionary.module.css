@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dictionary-name {
+  flex: 1;
+}
