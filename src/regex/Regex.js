@@ -156,7 +156,9 @@ class RegexPattern extends React.Component {
           value={this.state.pattern}
           onChange={this.handleChange}
         ></input>
-        <div class="regex-error-message">{this.state.errorMessage}</div>
+        <div className={styles["regex-error-message"]}>
+          {this.state.errorMessage}
+        </div>
         <div className={styles.flags}>{flagElements}</div>
       </div>
     );
@@ -306,7 +308,7 @@ class ReplacedString extends React.Component {
     }
 
     return (
-      <div class="block">
+      <div className={styles.block}>
         <div className={styles.title}>Replaced string</div>
         <div className={styles.content} style={{ overflowY: "auto" }}>
           {replacedString}

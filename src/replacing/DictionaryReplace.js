@@ -24,7 +24,7 @@ export class DictionaryReplace extends React.Component {
       this.setState((prevState) => ({
         ...prevState,
         dictionaries,
-        selectedDictionaryId: dictionaries?.[0].dictionaryId,
+        selectedDictionaryId: dictionaries?.[0]?.dictionaryId,
       }));
     });
   }
