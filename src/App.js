@@ -1,18 +1,18 @@
 import React from "react";
-import "./App.css";
 import { Regex } from "./regex/Regex";
 import { BrowserRouter, Route, NavLink, Routes } from "react-router-dom";
 import { IssueToBranchName } from "./converters/IssueToBranchName";
 import { DictionaryReplace } from "./replacing/DictionaryReplace";
 import { Dictionary } from "./replacing/dictionary/Dictionary";
+import styles from "./App.module.css";
 
 function App() {
   const activeClassName = ({ isActive }) => {
-    return isActive ? "selected-menu-item" : "";
+    return isActive ? styles["selected-menu-item"] : "";
   };
   return (
     <BrowserRouter>
-      <nav className="menu">
+      <nav className={styles.menu}>
         <NavLink to="/dictionary-replace" className={activeClassName}>
           Dictionary Replace
         </NavLink>
@@ -29,9 +29,9 @@ function App() {
         <Route path="/regex" element={<Regex />} />
         <Route path="/converters" element={<IssueToBranchName />} />
       </Routes>
-      <footer>
-        <span className="about">
-          <a href="https://github.com/hoaftq">dev-utilities</a>
+      <footer className={styles.footer}>
+        <span className={styles.about}>
+          <a href="https://github.com/hoaftq/dev-utilities">dev-utilities</a>
         </span>
       </footer>
     </BrowserRouter>

@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 .menu {
   padding: 0.5em;
   background-color: black;
@@ -25,19 +21,19 @@
   color: black !important;
 }
 
-footer {
+.footer {
   text-align: right;
   height: 40px;
   border-top: 1px solid lightgray;
   margin-top: 1rem;
 }
 
-footer .about {
+.footer .about {
   font-size: small;
   line-height: 40px;
   margin-right: 0.5em;
 }
 
-footer .about a {
+.footer .about a {
   text-decoration: none;
 }
