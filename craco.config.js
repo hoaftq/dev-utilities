@@ -5,20 +5,15 @@ const {
 module.exports = {
   webpack: {
     configure: (webpackConfig, { env, paths }) => {
-      const plugins = webpackConfig.plugins.map((plugin) => {
-        // We don't want to inject remoteEntry.js to the index.html
-        if (plugin.constructor.name === "HtmlWebpackPlugin") {
-          plugin.options.chunks = ["main"];
-        }
-
-        return plugin;
-      });
-
       return {
         ...webpackConfig,
-        plugins,
+        plugins: excludeRemoteEntry(webpackConfig.plugins), // We don't want to inject remoteEntry.js to the index.html
         experiments: {
           outputModule: true,
+        },
+        output: {
+          ...webpackConfig.output,
+          publicPath: process.env.PUBLIC_PATH,
         },
       };
     },
@@ -44,3 +39,13 @@ module.exports = {
     ],
   },
 };
+
+function excludeRemoteEntry(plugins) {
+  return plugins.map((plugin) => {
+    if (plugin.constructor.name === "HtmlWebpackPlugin") {
+      plugin.options.chunks = ["main"];
+    }
+
+    return plugin;
+  });
+}
